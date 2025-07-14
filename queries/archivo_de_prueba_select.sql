@@ -1,0 +1,1 @@
+select * from nmt_pxp_practica_prest_Ti WHERE c_proceso = 4832;
