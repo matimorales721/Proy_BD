@@ -5,10 +5,8 @@ const config = require("./config");
 async function runQuery() {
     let connection;
 
-    const currentDB = config.LIQUIDA; // Cambiá por config.LIQUIDA si querés
-
     try {
-        connection = await oracledb.getConnection(currentDB);
+        connection = await oracledb.getConnection();
 
         const result = await connection.execute(
             `SELECT count(1) FROM nmt_pxp_practica_prest_ti WHERE c_proceso = 4832`,

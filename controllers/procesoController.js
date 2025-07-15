@@ -1,4 +1,4 @@
-const { getProcesos, getProceso } = require("../services/pxpService");
+const { getProcesos, getProceso } = require("../services/procesosService");
 
 exports.getProcesos = async (req, res) => {
     try {

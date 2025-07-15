@@ -1,12 +1,20 @@
-const oracledb = require("oracledb");
-const config = require("../config");
-oracledb.initOracleClient({ libDir: "C:\\Oracle\\instantclient_21_18" });
+const oracledb = require("../db/oracleClient");
+
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
+
+const { errorHandler } = require("../middlewares/errorHandler");
+const pxpRoutes = require("../routes/procesosRoutes");
+const setupLogging = require("../logger");
+
+const app = express();
 
 async function getProcesos() {
     let connection;
-
     try {
-        connection = await oracledb.getConnection(config.FIX);
+        connection = await oracledb.getConnection();
         const result = await connection.execute(
             `SELECT * FROM NMT_PXP_PROCESO_CALCULO WHERE c_proceso IN (4821, 4822, 4832, 4836)`,
             [],
@@ -30,7 +38,7 @@ async function getProcesos() {
 async function getProceso(c_proceso) {
     let connection;
     try {
-        connection = await oracledb.getConnection(config.FIX);
+        connection = await oracledb.getConnection();
         const result = await connection.execute(
             `SELECT * FROM NMT_PXP_PROCESO_CALCULO WHERE c_proceso = :c_proceso`,
             { c_proceso },
