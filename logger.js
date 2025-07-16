@@ -14,7 +14,7 @@ function setupLogging(app) {
 
     // Exporta el middleware configurado según el entorno
     function setupLogging(app) {
-        if (process.env.NODE_ENV === "production") {
+        if (process.env.DB_ENV === "production") {
             app.use(morgan("combined", { stream: accessLogStream }));
         } else {
             app.use(morgan("dev"));

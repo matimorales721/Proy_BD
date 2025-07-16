@@ -1,12 +1,11 @@
-const oracledb = require("../db/oracleClient");
+const { oracledb } = require("../db/oracleClient");
+const { handleOracleError } = require("../middlewares/oracleErrorHandler");
 
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 
-const { errorHandler } = require("../middlewares/errorHandler");
-const pxpRoutes = require("../routes/procesosRoutes");
 const setupLogging = require("../logger");
 
 const app = express();
@@ -22,16 +21,9 @@ async function getProcesos() {
         );
         return result.rows;
     } catch (error) {
-        console.error("Error en getProcesos:", error);
-        throw error;
+        throw handleOracleError(error, "getProcesos");
     } finally {
-        if (connection) {
-            try {
-                await connection.close();
-            } catch (err) {
-                console.error("Error al cerrar conexión:", err);
-            }
-        }
+        if (connection) await connection.close();
     }
 }
 
@@ -46,8 +38,7 @@ async function getProceso(c_proceso) {
         );
         return result.rows[0]; // devuelve un solo objeto, no array
     } catch (error) {
-        console.error("Error en getProceso:", error);
-        throw error;
+        throw handleOracleError(error, "getProceso");
     } finally {
         if (connection) await connection.close();
     }

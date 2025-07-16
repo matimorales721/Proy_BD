@@ -1,11 +1,19 @@
 const oracledb = require("oracledb");
+const config = require("../db/config");
 
 async function initOraclePool() {
+    const dbMode = process.env.DB_MODE || "LIQUIDA";
+    const dbConfig = config[dbMode];
+
+    if (!dbConfig) {
+        throw new Error(`❌ Configuración inválida para DB_MODE: ${dbMode}`);
+    }
+
     try {
         await oracledb.createPool({
-            user: process.env.LIQUIDA_USER, // me parece que aca tendria que venir un valor generico en base a si es fix o liquida
-            password: process.env.LIQUIDA_PASSWORD,
-            connectString: process.env.LIQUIDA_CONNECT_STRING,
+            user: dbConfig.user,
+            password: dbConfig.password,
+            connectString: dbConfig.connectString,
         });
         console.log("🔌 Pool Oracle creado correctamente");
     } catch (err) {
