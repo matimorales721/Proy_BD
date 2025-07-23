@@ -1,23 +1,25 @@
-const { oracledb } = require("../db/oracleClient");
+const oracledb = require("../db/oracleClient");
 const { handleOracleError } = require("../middlewares/oracleErrorHandler");
-
-require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
-
-const setupLogging = require("../logger");
-
-const app = express();
 
 async function getProcesos() {
     let connection;
     try {
         connection = await oracledb.getConnection();
         const result = await connection.execute(
-            `SELECT * FROM NMT_PXP_PROCESO_CALCULO WHERE c_proceso IN (4821, 4822, 4832, 4836)`,
+            `SELECT C_PROCESO,
+                    CASE WHEN C_TIPO_EJECUCION = 'M' THEN 'MENSUAL' ELSE 'EXCEPCIÓN' END TIPO_EJECUCION,
+                    C_GRUPO,
+                    C_PERIODO,
+                    F_INICIO,
+                    F_FIN,
+                    C_ESTADO_CALCULO,
+                    0 TUVO_ERRORES,
+                    TO_CHAR(TRUNC(ROUND((F_FIN-F_INICIO)*24 ,2))) || ':' || TO_CHAR(TRUNC(MOD((F_FIN - F_INICIO) * 24 * 60, 60)), 'FM00') AS DURACION_HHMM
+            FROM NMT_PXP_PROCESO_CALCULO WHERE c_proceso > 4000`,
             [],
-            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+            {
+                outFormat: oracledb.OUT_FORMAT_OBJECT,
+            }
         );
         return result.rows;
     } catch (error) {
