@@ -1,0 +1,47 @@
+# Tipo: Descripción breve del cambio
+
+#
+
+# Tipos de commit válidos:
+
+# feat: Nueva funcionalidad
+
+# fix: Corrección de errores
+
+# docs: Cambios en documentación
+
+# style: Cambios de formato (espacios, comas, etc, sin cambios de código)
+
+# refactor: Refactorización de código (sin nuevas funcionalidades ni correcciones)
+
+# test: Agregar o modificar pruebas
+
+# chore: Cambios en el proceso de build o herramientas auxiliares
+
+#
+
+# Ejemplo:
+
+# feat: Agregar manejo de errores Oracle con reconexión automática
+
+#
+
+# Descripción detallada del cambio (opcional):
+
+# - Se agregó contador de errores de conexión
+
+# - Se implementó sistema de reconexión automática
+
+# - Los mensajes de error ahora incluyen timestamp
+
+#
+
+# Notas importantes:
+
+# - Usar presente del indicativo ("agrega" no "agregado")
+
+# - Primera línea máximo 50 caracteres
+
+# - Separar título de cuerpo con línea en blanco
+
+# - Explicar el "qué" y "por qué", no el "cómo"
